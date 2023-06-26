@@ -1,5 +1,6 @@
 "use client";
 
+import Navbar from "@/components/Navbar/Navbar";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -39,7 +40,6 @@ const Card = ({ article }: CardProps) => (
 export default function Home() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [isLoading, setLoading] = useState(false);
-
   useEffect(() => {
     setLoading(true);
     fetch("https://api.realworld.io/api/articles")
@@ -56,6 +56,8 @@ export default function Home() {
   console.log(articles);
   return (
     <main>
+      <Navbar />
+
       {articles.map((article) => (
         <Card key={article.createdAt} article={article} />
       ))}

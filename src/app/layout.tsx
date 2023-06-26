@@ -1,6 +1,8 @@
 import Link from "next/link";
 import "./globals.css";
 import { Inter } from "next/font/google";
+import { useState } from "react";
+import Navbar from "@/components/Navbar/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,17 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <nav className="p-4 justify-between flex ">
-          <Link href={"/"}>Home</Link>
-          <div className="flex gap-2">
-            <Link href={"/sign-in"}>Sign In</Link>
-            <Link href={"/register"}>Register</Link>
-          </div>
-        </nav>
-
-        {children}
-      </body>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }
