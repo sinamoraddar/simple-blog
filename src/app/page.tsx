@@ -56,8 +56,6 @@ export default function Home() {
   console.log(articles);
   return (
     <main>
-      <Navbar />
-
       {articles.map((article) => (
         <Card key={article.createdAt} article={article} />
       ))}

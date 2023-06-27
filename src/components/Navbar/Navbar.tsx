@@ -1,22 +1,26 @@
 "use client";
 
+import { AuthContext } from "@/contexts/AuthContext";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 const Navbar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
-
+  const context = useContext(AuthContext);
+  console.log(context);
+  const onLogout = () => {
+    context?.setUser(null);
+  };
   return (
     <nav className="p-4 justify-between flex ">
       <Link href={"/"}>Home</Link>
       <div className="flex gap-2">
-        {isLoggedIn ? (
+        {context?.isAuthenticated ? (
           <>
             <Link href={"/editor"}>New Article</Link>
             <Link href={"/settings"}>Settings</Link>
             {/* todo: complete the dynamic route */}
             <Link href={"/profile/{username}"}>Profile</Link>
-            <button>Log out</button>
+            <button onClick={onLogout}>Log out</button>
           </>
         ) : (
           <>
