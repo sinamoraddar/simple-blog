@@ -6,7 +6,6 @@ import React, { useContext, useState } from "react";
 
 const Navbar = () => {
   const context = useContext(AuthContext);
-  console.log(context);
   const onLogout = () => {
     context?.setUser(null);
   };

@@ -23,8 +23,6 @@ const SignIn = () => {
   const context = useContext(AuthContext);
 
   const onChange = (e: any) => {
-    console.log(e.target.value);
-
     if (e.target.name === "email") {
       setEmail(e.target.value);
     } else {
@@ -41,8 +39,8 @@ const SignIn = () => {
       },
       body: JSON.stringify({
         user: {
-          email: "sinamoraddar@gmail.com",
-          password: "65CgGSK96fL8FPW",
+          email,
+          password,
         },
       }),
     })
