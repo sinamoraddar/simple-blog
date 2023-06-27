@@ -53,7 +53,6 @@ export default function Home() {
   if (isLoading) return <p>Loading...</p>;
   if (articles.length === 0) return <p>No profile data</p>;
 
-  console.log(articles);
   return (
     <main>
       {articles.map((article) => (
