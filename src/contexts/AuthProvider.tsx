@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { AuthContext } from "./AuthContext";
 
-interface User {
+export interface User {
   email: string;
   username: string;
   bio: string | null;
@@ -13,9 +13,13 @@ interface User {
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-
+  const onLogout = () => {
+    setUser(null);
+  };
   return (
-    <AuthContext.Provider value={{ user, setUser, isAuthenticated: !!user }}>
+    <AuthContext.Provider
+      value={{ user, setUser, isAuthenticated: !!user, onLogout }}
+    >
       {children}
     </AuthContext.Provider>
   );

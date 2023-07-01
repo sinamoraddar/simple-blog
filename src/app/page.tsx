@@ -1,9 +1,10 @@
 "use client";
 
 import Navbar from "@/components/Navbar/Navbar";
+import { AuthContext } from "@/contexts/AuthContext";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 export interface Article {
   author: {
@@ -40,6 +41,8 @@ const Card = ({ article }: CardProps) => (
 export default function Home() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [isLoading, setLoading] = useState(false);
+  const [isMyFeed, setIsMyFeed] = useState(false);
+  const context = useContext(AuthContext);
   useEffect(() => {
     setLoading(true);
     fetch("https://api.realworld.io/api/articles")
@@ -49,12 +52,23 @@ export default function Home() {
         setLoading(false);
       });
   }, []);
-
+  const changeFeedType = (isMyFeed: boolean) => {
+    setIsMyFeed(isMyFeed);
+  };
   if (isLoading) return <p>Loading...</p>;
   if (articles.length === 0) return <p>No profile data</p>;
 
   return (
     <main>
+      {context?.isAuthenticated && (
+        <>
+          {" "}
+          <button onClick={() => changeFeedType(true)}>your feed</button>
+          <button onClick={() => changeFeedType(false)}>global feed</button>
+        </>
+      )}
+
+      {isMyFeed && <h2>'my feed is hereeeeee'</h2>}
       {articles.map((article) => (
         <Card key={article.createdAt} article={article} />
       ))}

@@ -6,9 +6,7 @@ import React, { useContext, useState } from "react";
 
 const Navbar = () => {
   const context = useContext(AuthContext);
-  const onLogout = () => {
-    context?.setUser(null);
-  };
+
   return (
     <nav className="p-4 justify-between flex ">
       <Link href={"/"}>Home</Link>
@@ -19,7 +17,7 @@ const Navbar = () => {
             <Link href={"/settings"}>Settings</Link>
             {/* todo: complete the dynamic route */}
             <Link href={"/profile/{username}"}>Profile</Link>
-            <button onClick={onLogout}>Log out</button>
+            <button onClick={context.onLogout}>Log out</button>
           </>
         ) : (
           <>
