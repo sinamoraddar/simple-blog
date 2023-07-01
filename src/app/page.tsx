@@ -1,9 +1,23 @@
 "use client";
 
 import Navbar from "@/components/Navbar/Navbar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import GlobalFeed from "@/containers/Feeds/GlobalFeed";
+import YourFeed from "@/containers/Feeds/YourFeed";
 import { AuthContext } from "@/contexts/AuthContext";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
 import Image from "next/image";
 import Link from "next/link";
+import { Input } from "postcss";
 import { useContext, useEffect, useState } from "react";
 
 export interface Article {
@@ -26,15 +40,23 @@ export interface Article {
 
 type CardProps = { article: Article };
 
-const Card = ({ article }: CardProps) => (
+export const LocalCard = ({ article }: CardProps) => (
   <Link href={`/article/${article.slug}`}>
-    <div className="p-3">
-      <h3>Title: {article.title}</h3>
+    <Card>
+      <CardHeader>
+        <CardTitle>{article.title}</CardTitle>
+        <CardDescription>{article.description}</CardDescription>
+      </CardHeader>
 
-      <p>Description: {article.description}</p>
-
-      <p>slug: {article.slug}</p>
-    </div>
+      <CardFooter>
+        Tags:
+        {article.tagList.map((tag: string) => (
+          <Badge className="mx-2" key={tag}>
+            {tag}
+          </Badge>
+        ))}
+      </CardFooter>
+    </Card>
   </Link>
 );
 
@@ -60,18 +82,28 @@ export default function Home() {
 
   return (
     <main>
-      {context?.isAuthenticated && (
-        <>
-          {" "}
-          <button onClick={() => changeFeedType(true)}>your feed</button>
-          <button onClick={() => changeFeedType(false)}>global feed</button>
-        </>
-      )}
-
       {isMyFeed && <h2>'my feed is hereeeeee'</h2>}
-      {articles.map((article) => (
-        <Card key={article.createdAt} article={article} />
-      ))}
+
+      <Tabs defaultValue="globalFeed" className="w-[400px] w-full">
+        <TabsList
+          className={`grid w-full grid-cols-${
+            context?.isAuthenticated ? "2" : "1"
+          }`}
+        >
+          {context?.isAuthenticated && (
+            <TabsTrigger value="yourFeed">Your Feed</TabsTrigger>
+          )}
+          <TabsTrigger value="globalFeed">Global Feed</TabsTrigger>
+        </TabsList>
+        {context?.isAuthenticated && (
+          <TabsContent value="yourFeed">
+            <YourFeed />
+          </TabsContent>
+        )}
+        <TabsContent value="globalFeed">
+          <GlobalFeed />
+        </TabsContent>
+      </Tabs>
     </main>
   );
 }
