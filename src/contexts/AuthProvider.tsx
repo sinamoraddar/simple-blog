@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { AuthContext } from "./AuthContext";
+import { getToken, removeToken } from "@/lib/authUtils";
 
 export interface User {
   email: string;
@@ -12,9 +13,10 @@ export interface User {
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(getToken());
   const onLogout = () => {
     setUser(null);
+    removeToken();
   };
   return (
     <AuthContext.Provider

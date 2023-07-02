@@ -4,6 +4,7 @@ import { AuthContext } from "@/contexts/AuthContext";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
+import { saveToken } from "@/lib/authUtils";
 
 export const isEmailValid = (email: string): boolean => {
   return !!String(email)
@@ -47,6 +48,7 @@ const SignIn = () => {
       .then((res) => res.json())
       .then((data) => {
         context?.setUser(data.user);
+        saveToken(data.user);
       });
   };
 
