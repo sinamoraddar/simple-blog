@@ -9,7 +9,7 @@ const Navbar = () => {
   const context = useContext(AuthContext);
 
   return (
-    <nav className="px-8 justify-between flex navbar bg-base-100 flex-wrap gap-4 ">
+    <nav className="navbar bg-base-200 px-8 justify-between flex flex-wrap gap-4 ">
       <Link className="btn btn-active normal-case text-xl" href={"/"}>
         Home
       </Link>

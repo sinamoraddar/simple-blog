@@ -1,6 +1,7 @@
 "use client";
 
 import { Article } from "@/app/page";
+import Loading from "@/components/Loading";
 import { Badge } from "@/components/ui/badge";
 import { AuthContext } from "@/contexts/AuthContext";
 import Link from "next/link";
@@ -52,32 +53,32 @@ const Page = ({ params }: { params: { slug: string } }) => {
     <div>
       {article ? (
         <>
-          {" "}
-          <header>
-            <h1>{article.title}</h1>
+          <div className="hero">
+            <div className="hero-content text-center">
+              <div className="max-w-lg">
+                <h1 className="text-5xl font-bold">{article.title}</h1>
+              </div>
+            </div>
+          </div>
+          {ProfileSection(article, setArticles)}
 
-            {ProfileSection(article, setArticles)}
-          </header>
           <div className="divider" />
-          <div>
+          <div className="max-w-md mx-auto">
             {article.body}
             {/* todo : extract the tags component */}
-            <div>
+            <div className="my-8">
               {article.tagList.map((tag: string) => (
                 <Badge className="mx-2" key={tag}>
                   {tag}
                 </Badge>
               ))}
             </div>
-
-            <div className="divider" />
-
-            {ProfileSection(article, setArticles)}
           </div>
+          <div className="divider" />
           <CommentsSection context={context} article={article} />
         </>
       ) : (
-        <span className="loading loading-spinner loading-lg"></span>
+        <Loading />
       )}
     </div>
   );
@@ -138,6 +139,32 @@ function CommentsSection({
       });
   };
 
+  const deleteComment = (commentId: number) => {
+    setLoading(true);
+    fetch(
+      `https://api.realworld.io/api/articles/${article.slug}/comments/${commentId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Requested-With": "XMLHttpRequest",
+          Authorization: "Token " + context?.user?.token,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setComments((comments) => {
+          if (comments) {
+            return comments.filter((comment) => comment.id !== commentId);
+          }
+          return comments;
+        });
+        setLoading(false);
+        setBody("");
+      });
+  };
+
   const fetchComments = () => {
     if (!context?.isAuthenticated) {
       return;
@@ -165,48 +192,50 @@ function CommentsSection({
   }, []);
 
   return (
-    <div>
+    <div className="max-w-md mx-auto">
       {context?.isAuthenticated ? (
         <>
-          {" "}
-          comment section
-          <textarea
-            value={body}
-            onChange={onChange}
-            placeholder="Write a comment"
-          />
-          <button
-            disabled={isLoading || !body}
-            onClick={postComment}
-            className="btn btn-primary"
-          >
-            post comment
-          </button>
+          <div className="flex flex-col gap-4">
+            <div className="form-control ">
+              <label className="input-group input-group-vertical">
+                <span>Body</span>
+                <textarea
+                  className="w-full textarea resize-none"
+                  value={body}
+                  onChange={onChange}
+                  placeholder="Write a comment"
+                />
+              </label>
+            </div>{" "}
+            <button
+              disabled={isLoading || !body}
+              onClick={postComment}
+              className="btn btn-primary"
+            >
+              Send
+            </button>
+          </div>
+
           {comments && comments?.length > 0 && (
-            <ul className="gap-4 flex-col flex ">
+            <ul className="gap-4 flex-col flex my-4">
               {comments?.map((comment) => (
                 <div
                   key={comment.createdAt}
-                  className="card w-96 bg-base-100 shadow-xl"
+                  className="card w-96 bg-base-100 w-full shadow-xl"
                 >
                   <div className="card-body">
                     <p>{comment.body}</p>
                   </div>
                   <div className="divider" />
-                  <div className="card-footer">
-                    <div className="flex ">
-                      {" "}
-                      <img
-                        className="rounded-full w-10 h-10"
-                        src={comment.author.image}
-                        alt={comment.author.username}
-                      />
-                      <div>
-                        {comment.author.username}
-                        {comment.createdAt}
-                      </div>
-                    </div>
-                    <button>delete comment</button>
+                  <div className="card-footer flex justify-between p-4 items-center">
+                    <div>{comment.author.username}</div>
+
+                    <button
+                      onClick={() => deleteComment(comment.id)}
+                      className="btn btn-outline btn-error"
+                    >
+                      Delete
+                    </button>
                   </div>
                 </div>
               ))}
@@ -214,11 +243,18 @@ function CommentsSection({
           )}
         </>
       ) : (
-        <>
-          <Link href={"/sign-in"}> Sign in </Link>or
-          <Link href={"/register"}> sign up </Link>
+        <div className="pb-8">
+          <Link className="link" href={"/sign-in"}>
+            {" "}
+            Sign in{" "}
+          </Link>
+          or
+          <Link className="link" href={"/register"}>
+            {" "}
+            sign up{" "}
+          </Link>
           to add comments on this article.
-        </>
+        </div>
       )}
     </div>
   );
@@ -279,22 +315,15 @@ function ProfileSection(article: Article, setArticles: any) {
   };
 
   return (
-    <div className="flex gap-2  ">
-      <img
-        className="rounded-full w-50 h-50"
-        src={article.author.image}
-        alt={article.author.username}
-      />
-      <div>
-        {" "}
+    <div className="flex gap-2 items-center  justify-center">
+      <div className="flex gap-2 items-center">
         <div>{article.author.username}</div>
-        <div>{article.updatedAt}</div>
       </div>
-      <button onClick={onFollow}>
+      <button className="btn btn-outline" onClick={onFollow}>
         {article.author.following ? "Unfollow" : "Follow"} (
         {article.author.username})
       </button>
-      <button onClick={onLike}>
+      <button className="btn btn-outline btn-accent" onClick={onLike}>
         {article.favorited ? "Unlike" : "❤️ Like"} ({article.favoritesCount})
       </button>
     </div>

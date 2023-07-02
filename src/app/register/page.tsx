@@ -57,24 +57,59 @@ const Register = () => {
     }
   }, [context?.isAuthenticated]);
   return (
-    <div className="flex flex-col items-center gap-4">
-      Register
-      <Link href={"/sign-in"}>Already have an account? Click here</Link>
-      <input
-        type="text"
-        name="username"
-        onChange={onChange}
-        placeholder="UserName"
-      />
-      <input type="text" name="email" onChange={onChange} placeholder="Email" />
-      <input
-        type="password"
-        name="password"
-        onChange={onChange}
-        placeholder="Password"
-      />
+    <div className="card w-96 bg-base-100 shadow-xl flex flex-col items-center gap-4 p-4 mt-8 mx-auto">
+      <h1 className="text-lg">Register</h1>
+      <p>
+        Already have an account?
+        <Link href={"/sign-in"} className="link link-accent ml-2">
+          Click here
+        </Link>
+      </p>
+
+      <div className="flex flex-col gap-4 w-full">
+        <div className="form-control ">
+          <label className="input-group input-group-vertical">
+            <span>Username</span>
+
+            <input
+              className="input input-bordered w-full"
+              type="text"
+              name="username"
+              onChange={onChange}
+              value={username}
+            />
+          </label>
+        </div>
+        <div className="form-control ">
+          <label className="input-group input-group-vertical">
+            <span>Email</span>
+
+            <input
+              onChange={onChange}
+              type="text"
+              placeholder="info@site.com"
+              className="input input-bordered w-full"
+              value={email}
+              name="email"
+            />
+          </label>
+        </div>
+        <div className="form-control  ">
+          <label className="input-group input-group-vertical">
+            <span>Password</span>
+
+            <input
+              onChange={onChange}
+              type="password"
+              className="input input-bordered w-full"
+              value={password}
+              name="password"
+            />
+          </label>
+        </div>
+      </div>
       <button
-        className="disabled:opacity-50"
+        className="btn btn-primary"
         disabled={!isValid(username, email, password)}
         onClick={onSubmit}
       >

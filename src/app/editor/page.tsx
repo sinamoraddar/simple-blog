@@ -1,5 +1,6 @@
 "use client";
 
+import Loading from "@/components/Loading";
 import { AuthContext } from "@/contexts/AuthContext";
 
 import { useRouter } from "next/navigation";
@@ -19,7 +20,7 @@ const Editor = () => {
 
   const context = useContext(AuthContext);
   const router = useRouter();
-
+  const [loading, setLoading] = useState(false);
   const onChange = (e: any) => {
     const { value } = e.target;
 
@@ -38,14 +39,17 @@ const Editor = () => {
   };
   const onAddTag = (e: any) => {
     const { value } = e.target;
-
+    if (!value.trim()) {
+      return;
+    }
     if (e.key === "Enter") {
-      setTagList((tags) => [...tags, value]);
+      setTagList((tags) => [...tags, value.trim()]);
       setTagName("");
     }
   };
 
   const onSubmit = () => {
+    setLoading(true);
     fetch("https://api.realworld.io/api/articles", {
       method: "POST",
       headers: {
@@ -67,6 +71,9 @@ const Editor = () => {
         if (data?.article?.slug) {
           router.push(`/article/${data?.article?.slug}`);
         }
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -77,49 +84,81 @@ const Editor = () => {
   }, [context?.isAuthenticated]);
 
   return (
-    <div className="flex flex-col gap-4">
-      <input
-        onChange={onChange}
-        type="text"
-        name="title"
-        placeholder="Article Title"
-        value={title}
-      />
-      <input
-        onChange={onChange}
-        type="text"
-        name="description"
-        placeholder="What's this article about?"
-        value={description}
-      />
-      <input
-        onChange={onChange}
-        type="text"
-        name="body"
-        placeholder="What's your article?"
-        value={body}
-      />
+    <div className="flex flex-col gap-4 w-full max-w-md mx-auto">
+      <div className="flex flex-col gap-4 w-full">
+        <div className="form-control ">
+          <label className="input-group input-group-vertical">
+            <span>Title</span>
 
-      <input
-        onKeyUp={onAddTag}
-        onChange={onChange}
-        type="text"
-        name="tags"
-        placeholder="Enter tags"
-        value={tagName}
-      />
-      {tagList.length > 0 && (
-        <ul>
-          {tagList.map((tag) => (
-            <li key={tag}>{tag}</li>
-          ))}
-        </ul>
-      )}
+            <input
+              onChange={onChange}
+              type="text"
+              name="title"
+              placeholder="Article Title"
+              className="input input-bordered w-full"
+              value={title}
+            />
+          </label>
+        </div>
+        <div className="form-control ">
+          <label className="input-group input-group-vertical">
+            <span>Description</span>
+
+            <input
+              onChange={onChange}
+              type="text"
+              name="description"
+              placeholder="What's this article about?"
+              className="input input-bordered w-full"
+              value={description}
+            />
+          </label>
+        </div>
+        <div className="form-control ">
+          <label className="input-group input-group-vertical">
+            <span>Body</span>
+
+            <textarea
+              className="w-full textarea resize-none"
+              onChange={onChange}
+              name="body"
+              placeholder="What's your article?"
+              value={body}
+            ></textarea>
+          </label>
+        </div>
+        <div className="form-control ">
+          <label className="input-group input-group-vertical">
+            <span>Tags</span>
+
+            <input
+              className="input input-bordered w-full"
+              onKeyUp={onAddTag}
+              onChange={onChange}
+              type="text"
+              name="tags"
+              placeholder="Enter tags"
+              value={tagName}
+            />
+          </label>{" "}
+          {tagList.length > 0 && (
+            <div className="flex my-4 flex-wrap gap-2 ">
+              {tagList.map((tag) => (
+                <div className="badge badge-outline" key={tag}>
+                  {tag}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
       <button
-        className="disabled:opacity-50"
-        disabled={!isValid(title, description, body)}
+        className="btn btn-success"
+        disabled={loading || !isValid(title, description, body)}
         onClick={onSubmit}
       >
+        {loading && <Loading />}
         Publish article
       </button>
     </div>

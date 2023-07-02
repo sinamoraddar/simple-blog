@@ -58,25 +58,45 @@ const SignIn = () => {
     }
   }, [context?.isAuthenticated]);
   return (
-    <div className="flex flex-col items-center gap-4">
-      SignIn
-      <Link href={"/register"}>Don't have an account? Click here</Link>
-      <input
-        onChange={onChange}
-        type="text"
-        placeholder="Email"
-        value={email}
-        name="email"
-      />
-      <input
-        onChange={onChange}
-        type="password"
-        placeholder="Password"
-        value={password}
-        name="password"
-      />
+    <div className="card w-96 bg-base-100 shadow-xl flex flex-col items-center gap-4 p-4 mt-8 mx-auto">
+      <h1 className="text-lg">Sign In</h1>
+      <p>
+        Don't have an account?
+        <Link href={"/register"} className="link link-accent ml-2">
+          Click here
+        </Link>
+      </p>
+      <div className="flex flex-col gap-4 w-full">
+        <div className="form-control ">
+          <label className="input-group input-group-vertical">
+            <span>Email</span>
+
+            <input
+              onChange={onChange}
+              type="text"
+              placeholder="info@site.com"
+              className="input input-bordered w-full"
+              value={email}
+              name="email"
+            />
+          </label>
+        </div>
+        <div className="form-control  ">
+          <label className="input-group input-group-vertical">
+            <span>Password</span>
+
+            <input
+              onChange={onChange}
+              type="password"
+              className="input input-bordered w-full"
+              value={password}
+              name="password"
+            />
+          </label>
+        </div>
+      </div>
       <button
-        className="disabled:opacity-50"
+        className="btn btn-success"
         disabled={!isValid(email, password)}
         onClick={onSubmit}
       >

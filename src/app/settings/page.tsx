@@ -11,7 +11,7 @@ const isValid = (): boolean => {
 const Settings = () => {
   const context = useContext(AuthContext);
   const router = useRouter();
-  console.log(context?.user);
+
   const [image, setImage] = useState(context?.user?.image);
   const [username, setUsername] = useState(context?.user?.username);
   const [bio, setBio] = useState(context?.user?.bio);
@@ -90,49 +90,100 @@ const Settings = () => {
   }, [context?.isAuthenticated]);
 
   return (
-    <div className="flex flex-col gap-4">
-      <h1>Settings</h1>
+    <>
+      <div className="hero">
+        <div className="hero-content text-center">
+          <div className="max-w-lg">
+            <h1 className="text-5xl font-bold">Settings</h1>
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col mx-auto gap-4 max-w-md">
+        <div className="flex flex-col gap-4 w-full w-full">
+          <div className="form-control ">
+            <label className="input-group input-group-vertical">
+              <span>Image</span>
 
-      <input
-        onChange={onChange}
-        type="text"
-        name="image"
-        value={image}
-        placeholder="image"
-      />
-      <input
-        onChange={onChange}
-        type="text"
-        name="username"
-        value={username}
-        placeholder="Username"
-      />
-      <input
-        onChange={onChange}
-        type="text"
-        name="bio"
-        value={bio}
-        placeholder="A short bio"
-      />
-      <input
-        onChange={onChange}
-        type="email"
-        name="email"
-        value={email}
-        placeholder="Email"
-      />
-      <input
-        onChange={onChange}
-        type="password"
-        name="password"
-        value={password}
-        placeholder="New Password"
-      />
+              <input
+                onChange={onChange}
+                type="text"
+                className="input input-bordered w-full"
+                value={image}
+                placeholder="image"
+                name="image"
+              />
+            </label>
+          </div>
+          <div className="form-control  ">
+            <label className="input-group input-group-vertical">
+              <span>Username</span>
 
-      <button onClick={onSubmit} disabled={!isValid()}>
-        update info
-      </button>
-    </div>
+              <input
+                onChange={onChange}
+                type="text"
+                className="input input-bordered w-full"
+                name="username"
+                value={username}
+                placeholder="Username"
+              />
+            </label>
+          </div>
+
+          <div className="form-control ">
+            <label className="input-group input-group-vertical">
+              <span>Bio</span>
+
+              <input
+                className="input input-bordered w-full"
+                onChange={onChange}
+                type="text"
+                name="bio"
+                value={bio}
+                placeholder="A short bio"
+              />
+            </label>
+          </div>
+          <div className="form-control  ">
+            <label className="input-group input-group-vertical">
+              <span>Email</span>
+
+              <input
+                type="email"
+                className="input input-bordered w-full"
+                onChange={onChange}
+                type="email"
+                name="email"
+                value={email}
+                placeholder="Email"
+              />
+            </label>
+          </div>
+          <div className="form-control  ">
+            <label className="input-group input-group-vertical">
+              <span>Password</span>
+
+              <input
+                onChange={onChange}
+                type="password"
+                className="input input-bordered w-full"
+                onChange={onChange}
+                type="password"
+                name="password"
+                value={password}
+                placeholder="New Password"
+              />
+            </label>
+          </div>
+        </div>
+        <button
+          className="btn btn-info"
+          onClick={onSubmit}
+          disabled={!isValid()}
+        >
+          update info
+        </button>
+      </div>
+    </>
   );
 };
 
