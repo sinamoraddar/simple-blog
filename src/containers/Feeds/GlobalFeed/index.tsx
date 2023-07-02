@@ -1,4 +1,5 @@
 import { Article, LocalCard } from "@/app/page";
+import Loading from "@/components/Loading";
 import { Card } from "@/components/ui/card";
 import React, { useEffect, useState } from "react";
 
@@ -16,15 +17,17 @@ const GlobalFeed = () => {
       });
   }, []);
   return (
-    <Card className="flex flex-col gap-4">
-      {isLoading
-        ? "...Loading"
-        : articles?.length === 0
-        ? "Nothing to see"
-        : articles?.map((article) => (
-            <LocalCard key={article.createdAt} article={article} />
-          ))}
-    </Card>
+    <div className="grid  grid-cols-1  lg:grid-cols-3 sm:grid-cols-2 gap-4">
+      {isLoading ? (
+        <Loading />
+      ) : articles?.length === 0 ? (
+        "Nothing to see"
+      ) : (
+        articles?.map((article) => (
+          <LocalCard key={article.createdAt} article={article} />
+        ))
+      )}
+    </div>
   );
 };
 

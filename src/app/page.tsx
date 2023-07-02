@@ -42,21 +42,21 @@ type CardProps = { article: Article };
 
 export const LocalCard = ({ article }: CardProps) => (
   <Link href={`/article/${article.slug}`}>
-    <Card>
-      <CardHeader>
-        <CardTitle>{article.title}</CardTitle>
-        <CardDescription>{article.description}</CardDescription>
-      </CardHeader>
-
-      <CardFooter>
-        Tags:
-        {article.tagList.map((tag: string) => (
-          <Badge className="mx-2" key={tag}>
-            {tag}
-          </Badge>
-        ))}
-      </CardFooter>
-    </Card>
+    <div className="card  h-full  bg-base-100 shadow-xl">
+      <div className="card-body">
+        <h2 className="card-title">{article.title}</h2>
+        <p>{article.description}</p>
+        <div className="divider" />
+        <div className="card-actions ">
+          {" "}
+          {article.tagList.map((tag: string) => (
+            <div className="badge badge-outline" key={tag}>
+              {tag}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   </Link>
 );
 
@@ -65,29 +65,38 @@ export default function Home() {
   const [isLoading, setLoading] = useState(false);
   const [isMyFeed, setIsMyFeed] = useState(false);
   const context = useContext(AuthContext);
+  type TabType = "Global" | "Yours";
 
+  const [activeTab, setActiveTab] = useState<TabType>("Yours");
+
+  const changeTab = (tab: TabType) => {
+    setActiveTab(tab);
+  };
   return (
-    <main className="px-8 justify-between flex ">
-      <Tabs defaultValue="globalFeed" className="w-[400px] w-full">
-        <TabsList
-          className={`grid w-full grid-cols-${
-            context?.isAuthenticated ? "2" : "1"
+    <main className="px-8 justify-between flex  flex-col py-4">
+      <div className="tabs">
+        <a
+          className={`tab tab-lifted ${
+            activeTab === "Global" ? "tab-active" : ""
           }`}
+          onClick={() => changeTab("Global")}
         >
-          {context?.isAuthenticated && (
-            <TabsTrigger value="yourFeed">Your Feed</TabsTrigger>
-          )}
-          <TabsTrigger value="globalFeed">Global Feed</TabsTrigger>
-        </TabsList>
+          Global
+        </a>
         {context?.isAuthenticated && (
-          <TabsContent value="yourFeed">
-            <YourFeed />
-          </TabsContent>
+          <a
+            className={`tab tab-lifted ${
+              activeTab === "Yours" ? "tab-active" : ""
+            }`}
+            onClick={() => changeTab("Yours")}
+          >
+            Yours
+          </a>
         )}
-        <TabsContent value="globalFeed">
-          <GlobalFeed />
-        </TabsContent>
-      </Tabs>
+      </div>
+      <div className="my-4">
+        {activeTab === "Global" ? <GlobalFeed /> : <YourFeed />}
+      </div>
     </main>
   );
 }

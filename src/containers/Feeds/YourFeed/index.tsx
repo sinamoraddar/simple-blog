@@ -1,4 +1,5 @@
 import { Article, LocalCard } from "@/app/page";
+import Loading from "@/components/Loading";
 import { Card } from "@/components/ui/card";
 import { AuthContext } from "@/contexts/AuthContext";
 import React, { useContext, useEffect, useState } from "react";
@@ -11,7 +12,7 @@ const YourFeed = () => {
   useEffect(() => {
     if (context?.isAuthenticated) {
       setLoading(true);
-      fetch("https://api.realworld.io/api/articles/feed", {
+      fetch("https://api.realworld.io/api/articles", {
         headers: {
           "Content-Type": "application/json",
           "X-Requested-With": "XMLHttpRequest",
@@ -27,15 +28,17 @@ const YourFeed = () => {
     }
   }, []);
   return (
-    <Card className="flex flex-col gap-4">
-      {isLoading
-        ? "...Loading"
-        : articles?.length === 0
-        ? "No articles are here... yet."
-        : articles?.map((article) => (
-            <LocalCard key={article.createdAt} article={article} />
-          ))}
-    </Card>
+    <div className="grid  grid-cols-1  lg:grid-cols-3 sm:grid-cols-2 gap-4">
+      {isLoading ? (
+        <Loading />
+      ) : articles?.length === 0 ? (
+        "No articles are here... yet."
+      ) : (
+        articles?.map((article) => (
+          <LocalCard key={article.createdAt} article={article} />
+        ))
+      )}
+    </div>
   );
 };
 
