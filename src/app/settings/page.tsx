@@ -74,7 +74,7 @@ const Settings = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data?.user?.username) {
-          router.push(`/profile/${data?.user?.username}`);
+          router.push(`/`);
         }
       });
   };

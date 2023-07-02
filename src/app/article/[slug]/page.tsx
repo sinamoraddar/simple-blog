@@ -201,10 +201,10 @@ function CommentsSection({
                         src={comment.author.image}
                         alt={comment.author.username}
                       />
-                      <Link href={`/profile/${comment.author.username}`}>
+                      <div>
                         {comment.author.username}
                         {comment.createdAt}
-                      </Link>
+                      </div>
                     </div>
                     <button>delete comment</button>
                   </div>
@@ -228,9 +228,6 @@ function ProfileSection(article: Article, setArticles: any) {
   const router = useRouter();
   const context = useContext(AuthContext);
 
-  const redirect = () => {
-    router.push(`/profile/${article.author.username}`);
-  };
   const redirectToRegister = () => {
     router.push(`/register`);
   };
@@ -282,7 +279,7 @@ function ProfileSection(article: Article, setArticles: any) {
   };
 
   return (
-    <div className="flex gap-2 cursor-pointer" onClick={redirect}>
+    <div className="flex gap-2  ">
       <img
         className="rounded-full w-50 h-50"
         src={article.author.image}

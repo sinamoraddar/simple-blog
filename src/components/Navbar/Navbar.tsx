@@ -9,21 +9,47 @@ const Navbar = () => {
   const context = useContext(AuthContext);
 
   return (
-    <nav className="p-4 justify-between flex ">
-      <Link href={"/"}>Home</Link>
-      <div className="flex gap-2">
+    <nav className="px-8 justify-between flex navbar bg-base-100 flex-wrap gap-4 ">
+      <Link className="btn btn-active normal-case text-xl" href={"/"}>
+        Home
+      </Link>
+      <div className="flex gap-2 flex-wrap   ">
         {context?.isAuthenticated ? (
           <>
-            <Link href={"/editor"}>New Article</Link>
-            <Link href={"/settings"}>Settings</Link>
+            <Link className="btn btn-info normal-case text-xl" href={"/editor"}>
+              New Article
+            </Link>
+            <Link
+              className="btn btn-success normal-case text-xl"
+              href={"/settings"}
+            >
+              Settings
+            </Link>
             {/* todo: complete the dynamic route */}
-            <Link href={"/profile/{username}"}>Profile</Link>
-            <button onClick={context.onLogout}>Log out</button>
+            <button
+              className="btn btn-warning normal-case text-xl"
+              onClick={context.onLogout}
+            >
+              Log out
+            </button>
+            <span className="text-xl btn cursor-default ">
+              {context.user?.username}
+            </span>
           </>
         ) : (
           <>
-            <Link href={"/sign-in"}>Sign In</Link>
-            <Link href={"/register"}>Register</Link>
+            <Link
+              className="btn btn-info normal-case text-xl"
+              href={"/sign-in"}
+            >
+              Sign In
+            </Link>
+            <Link
+              className="btn btn-success normal-case text-xl"
+              href={"/register"}
+            >
+              Register
+            </Link>
           </>
         )}
       </div>

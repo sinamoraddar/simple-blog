@@ -67,9 +67,7 @@ export default function Home() {
   const context = useContext(AuthContext);
 
   return (
-    <main>
-      {isMyFeed && <h2>'my feed is hereeeeee'</h2>}
-
+    <main className="px-8 justify-between flex ">
       <Tabs defaultValue="globalFeed" className="w-[400px] w-full">
         <TabsList
           className={`grid w-full grid-cols-${
