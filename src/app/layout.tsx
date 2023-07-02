@@ -5,6 +5,7 @@ import { useState } from "react";
 import Navbar from "@/components/Navbar/Navbar";
 import { AuthContext } from "@/contexts/AuthContext";
 import { AuthProvider } from "@/contexts/AuthProvider";
+import { cookies } from "next/headers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,6 +19,11 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const cookieStore = cookies();
+  const theme = cookieStore.get("theme");
+
+  console.log(cookieStore.getAll());
+
   return (
     <html lang="en">
       <body className={inter.className}>

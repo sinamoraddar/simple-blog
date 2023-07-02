@@ -65,20 +65,6 @@ export default function Home() {
   const [isLoading, setLoading] = useState(false);
   const [isMyFeed, setIsMyFeed] = useState(false);
   const context = useContext(AuthContext);
-  useEffect(() => {
-    setLoading(true);
-    fetch("https://api.realworld.io/api/articles")
-      .then((res) => res.json())
-      .then((data) => {
-        setArticles(data?.articles);
-        setLoading(false);
-      });
-  }, []);
-  const changeFeedType = (isMyFeed: boolean) => {
-    setIsMyFeed(isMyFeed);
-  };
-  if (isLoading) return <p>Loading...</p>;
-  if (articles.length === 0) return <p>No profile data</p>;
 
   return (
     <main>
