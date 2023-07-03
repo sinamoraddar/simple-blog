@@ -7,6 +7,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { saveToken } from "@/lib/authUtils";
 import Loading from "@/components/Loading";
 import { isEmailValid } from "@/lib/utils";
+import { signInUser } from "@/api/methods";
 
 const isValid = (email: string, password: string): boolean => {
   return isEmailValid(email) && !!password;
@@ -29,19 +30,7 @@ const SignIn = () => {
 
   const onSubmit = () => {
     setLoading(true);
-    fetch("https://api.realworld.io/api/users/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Requested-With": "XMLHttpRequest",
-      },
-      body: JSON.stringify({
-        user: {
-          email,
-          password,
-        },
-      }),
-    })
+    signInUser({ email, password })
       .then((res) => res.json())
       .then((data) => {
         if (data.errors) {

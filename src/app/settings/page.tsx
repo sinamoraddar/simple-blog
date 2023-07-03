@@ -1,5 +1,6 @@
 "use client";
 
+import { updateUser } from "@/api/methods";
 import Loading from "@/components/Loading";
 import { AuthContext } from "@/contexts/AuthContext";
 import { saveToken } from "@/lib/authUtils";
@@ -13,7 +14,7 @@ const isValid = (): boolean => {
 const Settings = () => {
   const context = useContext(AuthContext);
   const router = useRouter();
-
+  const token = context?.user?.token;
   const [image, setImage] = useState(context?.user?.image);
   const [username, setUsername] = useState(context?.user?.username);
   const [bio, setBio] = useState<string>(context?.user?.bio ?? "");
@@ -59,24 +60,7 @@ const Settings = () => {
   const onSubmit = (e: any) => {
     e.preventDefault();
     setLoading(true);
-    fetch("https://api.realworld.io/api/user", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Requested-With": "XMLHttpRequest",
-
-        Authorization: "Token " + context?.user?.token,
-      },
-      body: JSON.stringify({
-        user: {
-          bio,
-          email,
-          image,
-          password,
-          username,
-        },
-      }),
-    })
+    updateUser({ email, password, username, token, bio, image })
       .then((res) => res.json())
       .then((data) => {
         context?.setUser(data.user);

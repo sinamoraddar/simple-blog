@@ -1,3 +1,4 @@
+import { fetchFeed } from "@/api/methods";
 import { Article } from "@/app/page";
 import Card from "@/components/Card";
 import InfiniteScroll from "@/components/InfiniteScroll/InfiniteScroll";
@@ -11,17 +12,11 @@ const YourFeed = () => {
   const [isLoading, setLoading] = useState(false);
   const context = useContext(AuthContext);
   const [offset, setOffset] = useState(0);
-
+  const token = context?.user?.token;
   const fetchData = () => {
     articles?.length === 0 && setLoading(true);
     if (context?.isAuthenticated) {
-      fetch(`https://api.realworld.io/api/articles?limit=10&offset=${offset}`, {
-        headers: {
-          "Content-Type": "application/json",
-          "X-Requested-With": "XMLHttpRequest",
-          Authorization: "Token " + context?.user?.token,
-        },
-      })
+      fetchFeed(offset, token)
         .then((res) => res.json())
         .then((data) => {
           setArticles(data?.articles);

@@ -117,3 +117,127 @@ export const followOrUnFollowAuthor = ({
       },
     }
   );
+
+export const createNewArticle = ({
+  title,
+  body,
+  description,
+  tagList,
+  token,
+}: {
+  title: string;
+  body: string;
+  description: string;
+  tagList: string[];
+  token: string | undefined;
+}) =>
+  fetch("https://api.realworld.io/api/articles", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Requested-With": "XMLHttpRequest",
+      Authorization: "Token " + token,
+    },
+    body: JSON.stringify({
+      article: {
+        title,
+        body,
+        description,
+        tagList,
+      },
+    }),
+  });
+
+// user
+export const createUser = ({
+  email,
+  password,
+  username,
+}: {
+  email: string;
+  password: string;
+  username: string;
+}) =>
+  fetch("https://api.realworld.io/api/users", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Requested-With": "XMLHttpRequest",
+    },
+    body: JSON.stringify({
+      user: {
+        email,
+        password,
+        username,
+      },
+    }),
+  });
+export const updateUser = ({
+  email,
+  password,
+  username,
+  token,
+  bio,
+  image,
+}: {
+  email: string | undefined;
+  password: string | undefined;
+  bio: string | undefined;
+  image: string | undefined;
+
+  token: string | undefined;
+  username: string | undefined;
+}) =>
+  fetch("https://api.realworld.io/api/user", {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Requested-With": "XMLHttpRequest",
+
+      Authorization: "Token " + token,
+    },
+    body: JSON.stringify({
+      user: {
+        bio,
+        email,
+        image,
+        password,
+        username,
+      },
+    }),
+  });
+export const signInUser = ({
+  email,
+  password,
+}: {
+  email: string | undefined;
+  password: string | undefined;
+}) =>
+  fetch("https://api.realworld.io/api/users/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Requested-With": "XMLHttpRequest",
+    },
+    body: JSON.stringify({
+      user: {
+        email,
+        password,
+      },
+    }),
+  });
+
+// articles and feed
+export const fetchArticles = (offset: number) =>
+  fetch(`https://api.realworld.io/api/articles?limit=10&offset=${offset}`);
+export const fetchFeed = (offset: number, token: string | undefined) =>
+  fetch(
+    `https://api.realworld.io/api/articles/feed?limit=10&offset=${offset}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        "X-Requested-With": "XMLHttpRequest",
+        Authorization: "Token " + token,
+      },
+    }
+  );

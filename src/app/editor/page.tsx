@@ -1,5 +1,6 @@
 "use client";
 
+import { createNewArticle } from "@/api/methods";
 import Loading from "@/components/Loading";
 import { AuthContext } from "@/contexts/AuthContext";
 
@@ -20,6 +21,7 @@ const Editor = () => {
   const [error, setError] = useState("");
 
   const context = useContext(AuthContext);
+  const token = context?.user?.token;
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const onChange = (e: any) => {
@@ -52,22 +54,7 @@ const Editor = () => {
 
   const onSubmit = () => {
     setLoading(true);
-    fetch("https://api.realworld.io/api/articles", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Requested-With": "XMLHttpRequest",
-        Authorization: "Token " + context?.user?.token,
-      },
-      body: JSON.stringify({
-        article: {
-          title,
-          body,
-          description,
-          tagList,
-        },
-      }),
-    })
+    createNewArticle({ title, body, description, tagList, token })
       .then((res) => res.json())
       .then((data) => {
         if (data.errors) {

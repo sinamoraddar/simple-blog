@@ -1,3 +1,4 @@
+import { fetchArticles } from "@/api/methods";
 import { Article } from "@/app/page";
 import Card from "@/components/Card";
 import InfiniteScroll from "@/components/InfiniteScroll/InfiniteScroll";
@@ -11,7 +12,7 @@ const GlobalFeed = () => {
   const [offset, setOffset] = useState(0);
   const fetchData = () => {
     articles?.length === 0 && setLoading(true);
-    fetch(`https://api.realworld.io/api/articles?limit=10&offset=${offset}`)
+    fetchArticles(offset)
       .then((res) => res.json())
       .then((data) => {
         setArticles((articles) => [...articles, ...data?.articles]);

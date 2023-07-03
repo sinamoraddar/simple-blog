@@ -6,6 +6,7 @@ import { AuthContext } from "@/contexts/AuthContext";
 import { redirect } from "next/navigation";
 import Loading from "@/components/Loading";
 import { isEmailValid } from "@/lib/utils";
+import { createUser } from "@/api/methods";
 
 const isValid = (
   username: string,
@@ -35,20 +36,7 @@ const Register = () => {
 
   const onSubmit = (e: any) => {
     setLoading(true);
-    fetch("https://api.realworld.io/api/users", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Requested-With": "XMLHttpRequest",
-      },
-      body: JSON.stringify({
-        user: {
-          email,
-          password,
-          username,
-        },
-      }),
-    })
+    createUser({ email, password, username })
       .then((res) => res.json())
       .then((data) => {
         if (data.errors) {
