@@ -1,5 +1,6 @@
 "use client";
 
+import InfiniteScroll from "@/components/InfiniteScroll/InfiniteScroll";
 import Navbar from "@/components/Navbar/Navbar";
 
 import GlobalFeed from "@/containers/Feeds/GlobalFeed";
