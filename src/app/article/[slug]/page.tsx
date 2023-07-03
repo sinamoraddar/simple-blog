@@ -1,5 +1,13 @@
 "use client";
 
+import {
+  deleteArticleComments,
+  followOrUnFollowAuthor,
+  getArticleComments,
+  getArticleInfo,
+  likeOrUnlikeArticle,
+  postArticleComments,
+} from "@/api/methods";
 import { Article } from "@/app/page";
 import Loading from "@/components/Loading";
 import { AuthContext } from "@/contexts/AuthContext";
@@ -24,17 +32,13 @@ const Page = ({ params }: { params: { slug: string } }) => {
   const [article, setArticles] = useState<Article | null>(null);
   const [isLoading, setLoading] = useState(false);
   const context = useContext(AuthContext);
-
+  const token = context?.user?.token;
   useEffect(() => {
     setLoading(true);
-    fetch("https://api.realworld.io/api/articles/" + params.slug, {
-      headers: {
-        "Content-Type": "application/json",
-        "X-Requested-With": "XMLHttpRequest",
-        ...(context?.isAuthenticated && {
-          Authorization: "Token " + context?.user?.token,
-        }),
-      },
+    getArticleInfo({
+      slug: params.slug,
+      isAuthenticated: context?.isAuthenticated,
+      token,
     })
       .then((res) => res.json())
       .then((data) => {
@@ -43,13 +47,8 @@ const Page = ({ params }: { params: { slug: string } }) => {
       });
   }, [params.slug]);
 
-  const likePost = () => {
-    //todo: complete here
-    alert("liked");
-  };
-
   return (
-    <div>
+    <div className="py-8">
       {article ? (
         <>
           <div className="hero">
@@ -106,7 +105,7 @@ function CommentsSection({
   const [isLoading, setLoading] = useState(false);
 
   const [comments, setComments] = useState<CommentShape[] | null>(null);
-
+  const token = context?.user?.token;
   const onChange = (e: any) => {
     const { value } = e.target;
     setBody(value);
@@ -114,19 +113,10 @@ function CommentsSection({
 
   const postComment = () => {
     setLoading(true);
-    fetch(`https://api.realworld.io/api/articles/${article.slug}/comments`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Requested-With": "XMLHttpRequest",
-        Authorization: "Token " + context?.user?.token,
-      },
-
-      body: JSON.stringify({
-        comment: {
-          body: body.trim(),
-        },
-      }),
+    postArticleComments({
+      slug: article.slug,
+      body,
+      token,
     })
       .then((res) => res.json())
       .then((data) => {
@@ -143,17 +133,11 @@ function CommentsSection({
 
   const deleteComment = (commentId: number) => {
     setLoading(true);
-    fetch(
-      `https://api.realworld.io/api/articles/${article.slug}/comments/${commentId}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Requested-With": "XMLHttpRequest",
-          Authorization: "Token " + context?.user?.token,
-        },
-      }
-    )
+    deleteArticleComments({
+      slug: article.slug,
+      commentId,
+      token,
+    })
       .then((res) => res.json())
       .then((data) => {
         setComments((comments) => {
@@ -172,16 +156,7 @@ function CommentsSection({
       return;
     }
     setLoading(true);
-    fetch(
-      "https://api.realworld.io/api/articles/" + article.slug + "/comments",
-      {
-        headers: {
-          "Content-Type": "application/json",
-          "X-Requested-With": "XMLHttpRequest",
-          Authorization: "Token " + context?.user?.token,
-        },
-      }
-    )
+    getArticleComments({ slug: article.slug, token: context.user?.token })
       .then((res) => res.json())
       .then((data) => {
         setComments(data?.comments);
@@ -276,13 +251,10 @@ function ProfileSection(article: Article, setArticles: any) {
       redirectToRegister();
       return;
     }
-    fetch(`https://api.realworld.io/api/articles/${article.slug}/favorite`, {
-      method: article.favorited ? "DELETE" : "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Requested-With": "XMLHttpRequest",
-        Authorization: "Token " + context?.user?.token,
-      },
+    likeOrUnlikeArticle({
+      slug: article.slug,
+      favorited: article.favorited,
+      token: context.user?.token,
     })
       .then((res) => res.json())
       .then((data) => {
@@ -295,18 +267,11 @@ function ProfileSection(article: Article, setArticles: any) {
       redirectToRegister();
       return;
     }
-    fetch(
-      `
-    https://api.realworld.io/api/profiles/${article.author.username}/follow`,
-      {
-        method: article.author.following ? "DELETE" : "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Requested-With": "XMLHttpRequest",
-          Authorization: "Token " + context?.user?.token,
-        },
-      }
-    )
+    followOrUnFollowAuthor({
+      username: article.author.username,
+      following: article.author.following,
+      token: context.user?.token,
+    })
       .then((res) => res.json())
       .then((data) => {
         setArticles((article: Article) => ({
@@ -317,7 +282,7 @@ function ProfileSection(article: Article, setArticles: any) {
   };
 
   return (
-    <div className="flex gap-2 items-center  justify-center">
+    <div className="flex gap-2 items-center  justify-center ">
       <div className="flex gap-2 items-center">
         <div>{article.author.username}</div>
       </div>
