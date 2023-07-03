@@ -1,16 +1,11 @@
 "use client";
 
-import InfiniteScroll from "@/components/InfiniteScroll/InfiniteScroll";
-import Navbar from "@/components/Navbar/Navbar";
 
 import GlobalFeed from "@/containers/Feeds/GlobalFeed";
 import YourFeed from "@/containers/Feeds/YourFeed";
 import { AuthContext } from "@/contexts/AuthContext";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
-import Image from "next/image";
-import Link from "next/link";
-import { Input } from "postcss";
-import { useContext, useEffect, useState } from "react";
+
+import { useContext,  useState } from "react";
 
 export interface Article {
   author: {
@@ -31,13 +26,11 @@ export interface Article {
 }
 
 export default function Home() {
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [isLoading, setLoading] = useState(false);
-  const [isMyFeed, setIsMyFeed] = useState(false);
+
   const context = useContext(AuthContext);
   type TabType = "Global" | "Yours";
 
-  const [activeTab, setActiveTab] = useState<TabType>("Yours");
+  const [activeTab, setActiveTab] = useState<TabType>("Global");
 
   const changeTab = (tab: TabType) => {
     setActiveTab(tab);
