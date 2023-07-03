@@ -3,9 +3,9 @@
 import { updateUser } from "@/api/methods";
 import Loading from "@/components/Loading";
 import { AuthContext } from "@/contexts/AuthContext";
-import { saveToken } from "@/lib/authUtils";
 import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
+import {saveToken} from "@/contexts/AuthProvider";
 
 const isValid = (): boolean => {
   //todo : complete here
@@ -20,7 +20,6 @@ const Settings = () => {
   const [bio, setBio] = useState<string>(context?.user?.bio ?? "");
   const [email, setEmail] = useState(context?.user?.email);
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   //todo get rid of anys everythere
@@ -72,9 +71,6 @@ const Settings = () => {
       .finally(() => setLoading(false));
   };
 
-  const onLogout = () => {
-    context?.setUser(null);
-  };
 
   useEffect(() => {
     if (!context?.isAuthenticated) {
@@ -173,13 +169,7 @@ const Settings = () => {
           {loading && <Loading />}
           Update
         </button>{" "}
-        <div className="toast toast-top toast-center">
-          {error && (
-            <div className="alert alert-error">
-              <span>{error}</span>
-            </div>
-          )}
-        </div>
+
       </form>
     </>
   );

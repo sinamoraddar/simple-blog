@@ -4,10 +4,10 @@ import { AuthContext } from "@/contexts/AuthContext";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
-import { saveToken } from "@/lib/authUtils";
 import Loading from "@/components/Loading";
 import { isEmailValid } from "@/lib/utils";
 import { signInUser } from "@/api/methods";
+import {saveToken} from "@/contexts/AuthProvider";
 
 const isValid = (email: string, password: string): boolean => {
   return isEmailValid(email) && !!password;
