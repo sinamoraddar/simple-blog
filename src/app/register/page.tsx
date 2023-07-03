@@ -5,7 +5,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/contexts/AuthContext";
 import { redirect } from "next/navigation";
 import Loading from "@/components/Loading";
-import { isEmailValid } from "@/lib/utils";
+import { isEmailValid } from "@/utils/utils";
 import { createUser } from "@/api/methods";
 
 const isValid = (
@@ -34,7 +34,7 @@ const Register = () => {
     }
   };
 
-  const onSubmit = (e: any) => {
+  const onSubmit = () => {
     setLoading(true);
     createUser({ email, password, username })
       .then((res) => res.json())

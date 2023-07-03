@@ -13,7 +13,6 @@ import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import CommentsSection from "@/modules/CommentsSection";
 
-
 const Page = ({ params }: { params: { slug: string } }) => {
   const [article, setArticles] = useState<Article | null>(null);
   const context = useContext(AuthContext);

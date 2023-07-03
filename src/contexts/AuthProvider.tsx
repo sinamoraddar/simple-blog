@@ -2,13 +2,7 @@
 
 import { useState } from "react";
 import { AuthContext } from "./AuthContext";
-import {useToken} from "@/lib/useToken";
-
-
-
-
-
-
+import { useToken } from "@/utils/useToken";
 
 export interface UserShape {
   email: string;
@@ -19,7 +13,7 @@ export interface UserShape {
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const {removeToken,getToken}=useToken()
+  const { removeToken, getToken } = useToken();
   const [user, setUser] = useState<UserShape | null>(getToken());
   const onLogout = () => {
     setUser(null);

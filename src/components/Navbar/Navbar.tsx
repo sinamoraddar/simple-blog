@@ -24,7 +24,6 @@ const Navbar = () => {
             >
               Settings
             </Link>
-            {/* todo: complete the dynamic route */}
             <button
               className="btn btn-warning normal-case text-xl"
               onClick={context.onLogout}

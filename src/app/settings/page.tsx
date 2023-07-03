@@ -5,12 +5,8 @@ import Loading from "@/components/Loading";
 import { AuthContext } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
-import {useToken} from "@/lib/useToken";
+import { useToken } from "@/utils/useToken";
 
-const isValid = (): boolean => {
-  //todo : complete here
-  return true;
-};
 const Settings = () => {
   const context = useContext(AuthContext);
   const router = useRouter();
@@ -21,7 +17,7 @@ const Settings = () => {
   const [email, setEmail] = useState(context?.user?.email);
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-const {saveToken}=useToken()
+  const { saveToken } = useToken();
   //todo get rid of anys everythere
   const onChange = (e: any) => {
     const { name, value } = e.target;
@@ -70,7 +66,6 @@ const {saveToken}=useToken()
       })
       .finally(() => setLoading(false));
   };
-
 
   useEffect(() => {
     if (!context?.isAuthenticated) {
@@ -161,15 +156,10 @@ const {saveToken}=useToken()
             </label>
           </div>
         </div>
-        <button
-          className="btn btn-info"
-          onClick={onSubmit}
-          disabled={loading || !isValid()}
-        >
+        <button className="btn btn-info" onClick={onSubmit} disabled={loading}>
           {loading && <Loading />}
           Update
         </button>{" "}
-
       </form>
     </>
   );

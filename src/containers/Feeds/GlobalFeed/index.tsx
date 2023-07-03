@@ -34,7 +34,7 @@ const GlobalFeed = () => {
       ) : (
         <>
           {articles?.map((article) => (
-            <Card key={article.createdAt} article={article} />
+            <Card key={article.title} article={article} />
           ))}
 
           <InfiniteScroll fetchData={fetchData} />
