@@ -6,14 +6,7 @@ import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
 import { saveToken } from "@/lib/authUtils";
 import Loading from "@/components/Loading";
-
-export const isEmailValid = (email: string): boolean => {
-  return !!String(email)
-    .toLowerCase()
-    .match(
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
-};
+import { isEmailValid } from "@/lib/utils";
 
 const isValid = (email: string, password: string): boolean => {
   return isEmailValid(email) && !!password;
@@ -75,7 +68,7 @@ const SignIn = () => {
     <form className="card w-96 bg-base-100 shadow-xl flex flex-col items-center gap-4 p-4 mt-8 mx-auto">
       <h1 className="text-lg">Sign In</h1>
       <p>
-        Don't have an account?
+        {`Don't have an account?`}
         <Link href={"/register"} className="link link-accent ml-2">
           Click here
         </Link>

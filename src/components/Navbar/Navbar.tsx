@@ -3,7 +3,6 @@
 import { AuthContext } from "@/contexts/AuthContext";
 import Link from "next/link";
 import React, { useContext, useState } from "react";
-import { Button } from "../ui/button";
 
 const Navbar = () => {
   const context = useContext(AuthContext);

@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
-import { isEmailValid } from "../sign-in/page";
 import { AuthContext } from "@/contexts/AuthContext";
 import { redirect } from "next/navigation";
 import Loading from "@/components/Loading";
+import { isEmailValid } from "@/lib/utils";
 
 const isValid = (
   username: string,

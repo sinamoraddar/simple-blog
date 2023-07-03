@@ -1,6 +1,7 @@
-import { Article, LocalCard } from "@/app/page";
+import { Article } from "@/app/page";
+import Card from "@/components/Card";
 import Loading from "@/components/Loading";
-import { Card } from "@/components/ui/card";
+
 import React, { useEffect, useState } from "react";
 
 const GlobalFeed = () => {
@@ -24,7 +25,7 @@ const GlobalFeed = () => {
         "Nothing to see"
       ) : (
         articles?.map((article) => (
-          <LocalCard key={article.createdAt} article={article} />
+          <Card key={article.createdAt} article={article} />
         ))
       )}
     </div>

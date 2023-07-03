@@ -2,7 +2,6 @@
 
 import { Article } from "@/app/page";
 import Loading from "@/components/Loading";
-import { Badge } from "@/components/ui/badge";
 import { AuthContext } from "@/contexts/AuthContext";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -66,13 +65,16 @@ const Page = ({ params }: { params: { slug: string } }) => {
           <div className="max-w-md mx-auto">
             {article.body}
             {/* todo : extract the tags component */}
-            <div className="my-8">
-              {article.tagList.map((tag: string) => (
-                <Badge className="mx-2" key={tag}>
-                  {tag}
-                </Badge>
-              ))}
-            </div>
+
+            {article.tagList.length > 0 && (
+              <div className="flex my-4 flex-wrap gap-2 ">
+                {article.tagList.map((tag) => (
+                  <div className="badge badge-outline" key={tag}>
+                    {tag}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
           <div className="divider" />
           <CommentsSection context={context} article={article} />
@@ -268,7 +270,7 @@ function ProfileSection(article: Article, setArticles: any) {
     router.push(`/register`);
   };
 
-  const onLike = (e) => {
+  const onLike = (e: any) => {
     e.stopPropagation();
     if (!context?.isAuthenticated) {
       redirectToRegister();

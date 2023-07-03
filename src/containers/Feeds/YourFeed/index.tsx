@@ -1,6 +1,7 @@
-import { Article, LocalCard } from "@/app/page";
+import { Article } from "@/app/page";
+import Card from "@/components/Card";
 import Loading from "@/components/Loading";
-import { Card } from "@/components/ui/card";
+
 import { AuthContext } from "@/contexts/AuthContext";
 import React, { useContext, useEffect, useState } from "react";
 
@@ -35,7 +36,7 @@ const YourFeed = () => {
         "No articles are here... yet."
       ) : (
         articles?.map((article) => (
-          <LocalCard key={article.createdAt} article={article} />
+          <Card key={article.createdAt} article={article} />
         ))
       )}
     </div>

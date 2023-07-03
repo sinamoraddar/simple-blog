@@ -16,7 +16,7 @@ const Settings = () => {
 
   const [image, setImage] = useState(context?.user?.image);
   const [username, setUsername] = useState(context?.user?.username);
-  const [bio, setBio] = useState(context?.user?.bio);
+  const [bio, setBio] = useState<string>(context?.user?.bio ?? "");
   const [email, setEmail] = useState(context?.user?.email);
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -160,7 +160,6 @@ const Settings = () => {
                 type="email"
                 className="input input-bordered w-full"
                 onChange={onChange}
-                type="email"
                 name="email"
                 value={email}
                 placeholder="Email"
@@ -175,8 +174,6 @@ const Settings = () => {
                 onChange={onChange}
                 type="password"
                 className="input input-bordered w-full"
-                onChange={onChange}
-                type="password"
                 name="password"
                 value={password}
                 placeholder="New Password"
