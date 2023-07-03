@@ -7,7 +7,7 @@ import {
 } from "@/api/methods";
 import { Article } from "@/app/page";
 import Loading from "@/components/Loading";
-import { AuthContext } from "@/app/contexts/AuthContext";
+import { AuthContext } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 
 import React, { useContext, useEffect, useState } from "react";

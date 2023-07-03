@@ -3,6 +3,7 @@ import React, {useEffect, useState} from "react";
 import {deleteArticleComments, getArticleComments, postArticleComments} from "@/api/methods";
 import Link from "next/link";
 import Loading from "@/components/Loading";
+import {UserShape} from "@/contexts/AuthProvider";
 
 interface CommentShape {
     id: number;
@@ -22,8 +23,7 @@ function CommentsSection({
                          }: {
     context: {
         user:
-            | import("/Users/sinamoraddar/Documents/Projects/simple-blog/src/contexts/AuthProvider").User
-            | null;
+         UserShape|null;
         setUser: any;
         isAuthenticated: boolean;
         onLogout: any;

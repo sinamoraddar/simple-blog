@@ -4,7 +4,7 @@ import Card from "@/components/Card";
 import InfiniteScroll from "@/components/InfiniteScroll/InfiniteScroll";
 import Loading from "@/components/Loading";
 
-import { AuthContext } from "@/app/contexts/AuthContext";
+import { AuthContext } from "@/contexts/AuthContext";
 import React, { useContext, useEffect, useState } from "react";
 
 const YourFeed = () => {

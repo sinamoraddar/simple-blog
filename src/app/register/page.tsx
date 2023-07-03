@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
-import { AuthContext } from "@/app/contexts/AuthContext";
+import { AuthContext } from "@/contexts/AuthContext";
 import { redirect } from "next/navigation";
 import Loading from "@/components/Loading";
 import { isEmailValid } from "@/lib/utils";

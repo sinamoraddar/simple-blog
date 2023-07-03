@@ -2,7 +2,7 @@
 
 import { updateUser } from "@/api/methods";
 import Loading from "@/components/Loading";
-import { AuthContext } from "@/app/contexts/AuthContext";
+import { AuthContext } from "@/contexts/AuthContext";
 import { saveToken } from "@/lib/authUtils";
 import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";

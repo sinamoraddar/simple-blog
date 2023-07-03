@@ -1,6 +1,6 @@
 "use client";
 
-import { AuthContext } from "@/app/contexts/AuthContext";
+import { AuthContext } from "@/contexts/AuthContext";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";

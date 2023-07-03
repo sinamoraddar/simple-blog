@@ -1,9 +1,9 @@
 import { createContext } from "react";
-import { User } from "./AuthProvider";
+import { UserShape } from "./AuthProvider";
 
 // todo: get rid of anys in the codebase
 export const AuthContext = createContext<{
-  user: User | null;
+  user: UserShape | null;
   setUser: any;
   isAuthenticated: boolean;
   onLogout: any;
