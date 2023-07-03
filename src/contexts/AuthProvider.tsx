@@ -2,21 +2,12 @@
 
 import { useState } from "react";
 import { AuthContext } from "./AuthContext";
+import {useToken} from "@/lib/useToken";
 
 
 
-const TOKEN = "token";
 
-export const saveToken = (value: string) => {
-  value && window.localStorage.setItem(TOKEN, JSON.stringify(value));
-};
-export const getToken = (): UserShape | null => {
-  const token = window.localStorage.getItem(TOKEN);
-  return token ? JSON.parse(token) : null;
-};
-export const removeToken = () => {
-  window.localStorage.removeItem(TOKEN);
-};
+
 
 
 export interface UserShape {
@@ -28,6 +19,7 @@ export interface UserShape {
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const {removeToken,getToken}=useToken()
   const [user, setUser] = useState<UserShape | null>(getToken());
   const onLogout = () => {
     setUser(null);

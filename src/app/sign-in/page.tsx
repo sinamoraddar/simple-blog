@@ -7,7 +7,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Loading from "@/components/Loading";
 import { isEmailValid } from "@/lib/utils";
 import { signInUser } from "@/api/methods";
-import {saveToken} from "@/contexts/AuthProvider";
+import {useToken} from "@/lib/useToken";
 
 const isValid = (email: string, password: string): boolean => {
   return isEmailValid(email) && !!password;
@@ -19,6 +19,7 @@ const SignIn = () => {
   const [error, setError] = useState("");
   const context = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
+    const {saveToken}=useToken()
 
   const onChange = (e: any) => {
     if (e.target.name === "email") {

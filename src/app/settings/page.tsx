@@ -5,7 +5,7 @@ import Loading from "@/components/Loading";
 import { AuthContext } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
-import {saveToken} from "@/contexts/AuthProvider";
+import {useToken} from "@/lib/useToken";
 
 const isValid = (): boolean => {
   //todo : complete here
@@ -21,7 +21,7 @@ const Settings = () => {
   const [email, setEmail] = useState(context?.user?.email);
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
+const {saveToken}=useToken()
   //todo get rid of anys everythere
   const onChange = (e: any) => {
     const { name, value } = e.target;
