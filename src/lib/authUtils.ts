@@ -3,7 +3,7 @@ import { User } from "@/contexts/AuthProvider";
 const TOKEN = "token";
 
 export const saveToken = (value: string) => {
-  localStorage.setItem(TOKEN, JSON.stringify(value));
+  value && localStorage.setItem(TOKEN, JSON.stringify(value));
 };
 export const getToken = (): User | null => {
   const token = localStorage.getItem(TOKEN);

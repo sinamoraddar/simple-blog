@@ -5,6 +5,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { isEmailValid } from "../sign-in/page";
 import { AuthContext } from "@/contexts/AuthContext";
 import { redirect } from "next/navigation";
+import Loading from "@/components/Loading";
 
 const isValid = (
   username: string,
@@ -18,7 +19,9 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
+  const [loading, setLoading] = useState(false);
   const context = useContext(AuthContext);
+  const [error, setError] = useState("");
 
   const onChange = (e: any) => {
     if (e.target.name === "email") {
@@ -30,7 +33,8 @@ const Register = () => {
     }
   };
 
-  const onSubmit = () => {
+  const onSubmit = (e: any) => {
+    setLoading(true);
     fetch("https://api.realworld.io/api/users", {
       method: "POST",
       headers: {
@@ -47,7 +51,21 @@ const Register = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        context?.setUser(data.user);
+        if (data.errors) {
+          setError(
+            Object.entries(data.errors)
+              .map((entry: [string, any]) => entry[0] + " " + entry[1][0])
+              .join(", ")
+          );
+          setTimeout(() => {
+            setError("");
+          }, 1000);
+        } else {
+          context?.setUser(data.user);
+        }
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -57,7 +75,7 @@ const Register = () => {
     }
   }, [context?.isAuthenticated]);
   return (
-    <div className="card w-96 bg-base-100 shadow-xl flex flex-col items-center gap-4 p-4 mt-8 mx-auto">
+    <form className="card w-96 bg-base-100 shadow-xl flex flex-col items-center gap-4 p-4 mt-8 mx-auto">
       <h1 className="text-lg">Register</h1>
       <p>
         Already have an account?
@@ -65,7 +83,6 @@ const Register = () => {
           Click here
         </Link>
       </p>
-
       <div className="flex flex-col gap-4 w-full">
         <div className="form-control ">
           <label className="input-group input-group-vertical">
@@ -110,12 +127,20 @@ const Register = () => {
       </div>
       <button
         className="btn btn-primary"
-        disabled={!isValid(username, email, password)}
+        disabled={loading || !isValid(username, email, password)}
         onClick={onSubmit}
       >
+        {loading && <Loading />}
         Register
-      </button>
-    </div>
+      </button>{" "}
+      <div className="toast toast-top toast-center">
+        {error && (
+          <div className="alert alert-error">
+            <span>{error}</span>
+          </div>
+        )}
+      </div>
+    </form>
   );
 };
 

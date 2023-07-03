@@ -1,6 +1,8 @@
 "use client";
 
+import Loading from "@/components/Loading";
 import { AuthContext } from "@/contexts/AuthContext";
+import { saveToken } from "@/lib/authUtils";
 import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 
@@ -17,6 +19,8 @@ const Settings = () => {
   const [bio, setBio] = useState(context?.user?.bio);
   const [email, setEmail] = useState(context?.user?.email);
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   //todo get rid of anys everythere
   const onChange = (e: any) => {
@@ -52,7 +56,9 @@ const Settings = () => {
     }
   };
 
-  const onSubmit = () => {
+  const onSubmit = (e: any) => {
+    e.preventDefault();
+    setLoading(true);
     fetch("https://api.realworld.io/api/user", {
       method: "PUT",
       headers: {
@@ -73,10 +79,13 @@ const Settings = () => {
     })
       .then((res) => res.json())
       .then((data) => {
+        context?.setUser(data.user);
+        saveToken(data.user);
         if (data?.user?.username) {
           router.push(`/`);
         }
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
   const onLogout = () => {
@@ -98,7 +107,7 @@ const Settings = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col mx-auto gap-4 max-w-md">
+      <form className="flex flex-col mx-auto gap-4 max-w-md">
         <div className="flex flex-col gap-4 w-full w-full">
           <div className="form-control ">
             <label className="input-group input-group-vertical">
@@ -178,11 +187,19 @@ const Settings = () => {
         <button
           className="btn btn-info"
           onClick={onSubmit}
-          disabled={!isValid()}
+          disabled={loading || !isValid()}
         >
-          update info
-        </button>
-      </div>
+          {loading && <Loading />}
+          Update
+        </button>{" "}
+        <div className="toast toast-top toast-center">
+          {error && (
+            <div className="alert alert-error">
+              <span>{error}</span>
+            </div>
+          )}
+        </div>
+      </form>
     </>
   );
 };

@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
 import { saveToken } from "@/lib/authUtils";
+import Loading from "@/components/Loading";
 
 export const isEmailValid = (email: string): boolean => {
   return !!String(email)
@@ -21,7 +22,9 @@ const isValid = (email: string, password: string): boolean => {
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const context = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
 
   const onChange = (e: any) => {
     if (e.target.name === "email") {
@@ -32,6 +35,7 @@ const SignIn = () => {
   };
 
   const onSubmit = () => {
+    setLoading(true);
     fetch("https://api.realworld.io/api/users/login", {
       method: "POST",
       headers: {
@@ -47,8 +51,18 @@ const SignIn = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        context?.setUser(data.user);
-        saveToken(data.user);
+        if (data.errors) {
+          setError("Your Credentials Are Incorrect, Please check them again");
+          setTimeout(() => {
+            setError("");
+          }, 1000);
+        } else {
+          context?.setUser(data.user);
+          saveToken(data.user);
+        }
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -58,7 +72,7 @@ const SignIn = () => {
     }
   }, [context?.isAuthenticated]);
   return (
-    <div className="card w-96 bg-base-100 shadow-xl flex flex-col items-center gap-4 p-4 mt-8 mx-auto">
+    <form className="card w-96 bg-base-100 shadow-xl flex flex-col items-center gap-4 p-4 mt-8 mx-auto">
       <h1 className="text-lg">Sign In</h1>
       <p>
         Don't have an account?
@@ -97,12 +111,20 @@ const SignIn = () => {
       </div>
       <button
         className="btn btn-success"
-        disabled={!isValid(email, password)}
+        disabled={loading || !isValid(email, password)}
         onClick={onSubmit}
       >
-        submit
+        {loading && <Loading />}
+        Submit
       </button>
-    </div>
+      <div className="toast toast-top toast-center">
+        {error && (
+          <div className="alert alert-error">
+            <span>{error}</span>
+          </div>
+        )}
+      </div>
+    </form>
   );
 };
 
