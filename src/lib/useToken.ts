@@ -8,15 +8,16 @@ export const useToken=()=>{
 
 
 
-      const saveToken = (value: string) => {
-        value && localStorage.setItem(TOKEN, JSON.stringify(value));
+      const saveToken = (value: string) => {if (typeof window !== 'undefined') {
+        value && localStorage.setItem(TOKEN, JSON.stringify(value));}
     };
-      const getToken = (): UserShape | null => {
+      const getToken = (): UserShape | null => {if (typeof window !== 'undefined') {
         const token = localStorage.getItem(TOKEN);
-        return token ? JSON.parse(token) : null;
+        return token ? JSON.parse(token) : null;};
+          return  null
     };
-      const removeToken = () => {
-        localStorage.removeItem(TOKEN);
+      const removeToken = () => {if (typeof window !== 'undefined') {
+        localStorage.removeItem(TOKEN);}
     };
 
 
