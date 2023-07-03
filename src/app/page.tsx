@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar/Navbar";
 
 import GlobalFeed from "@/containers/Feeds/GlobalFeed";
 import YourFeed from "@/containers/Feeds/YourFeed";
-import { AuthContext } from "@/contexts/AuthContext";
+import { AuthContext } from "@/app/contexts/AuthContext";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
 import Image from "next/image";
 import Link from "next/link";

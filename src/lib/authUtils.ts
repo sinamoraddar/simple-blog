@@ -1,4 +1,4 @@
-import { User } from "@/contexts/AuthProvider";
+import { User } from "@/app/contexts/AuthProvider";
 
 const TOKEN = "token";
 
